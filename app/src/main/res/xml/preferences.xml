@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout="@+id/prefs_frame">
+
+    <EditTextPreference
+        android:dialogTitle=""
+        android:key="name_preference"
+        android:summary="Your contricutor name"
+        android:title="Name" />
+
+    <Preference
+        android:key="email_preference"
+        android:summary=""
+        android:title="Email"/>
+
+    <EditTextPreference
+        android:dialogTitle=""
+        android:key="edittext_preference"
+        android:summary=""
+        android:title="Change Password" />
+
+</PreferenceScreen>

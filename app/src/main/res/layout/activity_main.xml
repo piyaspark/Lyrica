@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="158dp"
+        android:fontFamily="@font/roboto_thin"
+        android:text="LYRICA"
+        android:textColor="#FAF8F8"
+        android:textSize="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="128dp"
+        android:ems="10"
+        android:fontFamily="@font/roboto_thin"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#FAF9F9"
+        android:textColorHighlight="#009688"
+        android:textColorHint="#FAF9F9"
+        android:textColorLink="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:fontFamily="@font/roboto_thin"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:shadowColor="#F6F3F3"
+        android:textColor="#F4F2F2"
+        android:textColorHint="#F4F3F3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailText" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="210dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:background="#4E4A4A"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="228dp"
+        android:fontFamily="@font/roboto"
+        android:text="Don't have an account?"
+        android:textColor="#F8F5F5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+
+    <TextView
+        android:id="@+id/signupText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:fontFamily="@font/roboto"
+        android:text="Sign up here"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

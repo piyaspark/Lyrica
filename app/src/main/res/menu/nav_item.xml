@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_music"
+        android:enabled="true"
+        android:icon="@drawable/music_icon"
+        android:title="Music"/>
+    <item
+        android:id="@+id/item_account"
+        android:enabled="true"
+        android:icon="@drawable/account_icon"
+        android:title="Account"/>
+    <item
+        android:id="@+id/item_contribute"
+        android:enabled="true"
+        android:icon="@drawable/contribute_icon"
+        android:title="Contribute"/>
+    <item
+        android:id="@+id/item_search"
+        android:enabled="true"
+        android:icon="@drawable/search_icon"
+        android:title="Search"/>
+</menu>
