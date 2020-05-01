@@ -1,5 +1,6 @@
 package com.example.lyrica_app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -7,9 +8,16 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,32 +29,47 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class TrackDetail extends AppCompatActivity {
-    private ImageButton backBtn, playlistBtn, favoriteBtn;
-    private TextView trackTitle, trackArtist, trackLyric;
+    private ImageButton backBtn, favoriteBtn;
+    private TextView titleText, artistText, lyricText;
     private ProgressDialog pd;
     private int trackId;
+    private String trackTitle, trackArtist, trackLyric;
     private String url;
     private final String API_KEY = "apikey=b259ba906c6a3d625a51558589a92cc4";
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_detail);
         backBtn = (ImageButton) findViewById(R.id.backBtn2);
-        playlistBtn = (ImageButton) findViewById(R.id.playlistBtn);
         favoriteBtn = (ImageButton) findViewById(R.id.favoriteBtn);
-        trackTitle = (TextView) findViewById(R.id.titleText);
-        trackArtist = (TextView) findViewById(R.id.artistText);
-        trackLyric = (TextView) findViewById(R.id.lyricText);
+        titleText = (TextView) findViewById(R.id.titleText);
+        artistText = (TextView) findViewById(R.id.artistText);
+        lyricText = (TextView) findViewById(R.id.lyricText);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         Bundle bundle = getIntent().getExtras();
-        trackId = bundle.getInt("trackId");
-        Log.d("Track ID: ", String.format("%d",trackId));
-        trackTitle.setText(bundle.getString("trackTitle"));
-        trackArtist.setText(bundle.getString("trackArtist"));
+        if (bundle != null) {
+            trackId = bundle.getInt("trackId");
+            trackTitle = bundle.getString("trackTitle");
+            trackArtist = bundle.getString("trackArtist");
+        }
+
+        Log.d("Track ID: ", String.format("%d", trackId));
+        titleText.setText(trackTitle);
+        artistText.setText(trackArtist);
 
         fetch();
 
@@ -54,15 +77,43 @@ public class TrackDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
+        favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> track = new HashMap<>();
+                track.put("id", trackId);
+                track.put("title", trackTitle);
+                track.put("artist", trackArtist);
+                track.put("lyrics", trackLyric);
+
+                db.collection("tracks").document(Objects.requireNonNull(mAuth.getUid()))
+                        .set(track)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("Favorite track", "DocumentSnapshot successfully written!");
+                                Toast.makeText(TrackDetail.this, "Song has been added to favorite list.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("Favorite track", "Error writing document", e);
+                            }
+                        });
+            }
+        });
     }
 
+
     @SuppressLint("DefaultLocale")
-    private void fetch(){
-        url = String.format("https://api.musixmatch.com/ws/1.1/track.lyrics.get?format=jsonp&callback=callback&track_id=%d&%s",trackId,API_KEY);
+    private void fetch() {
+        url = String.format("https://api.musixmatch.com/ws/1.1/track.lyrics.get?format=jsonp&callback=callback&track_id=%d&%s", trackId, API_KEY);
         new FetchData().execute(url);
     }
 
@@ -126,27 +177,35 @@ public class TrackDetail extends AppCompatActivity {
             return null;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(JSONObject response) {
             super.onPostExecute(response);
-            JSONObject trackDetail;
-            try {
-                trackDetail = response.getJSONObject("message").getJSONObject("body").getJSONObject("lyrics");
-                String lyrics = trackDetail.getString("lyrics_body");
-                String[] lyric = lyrics.split(Pattern.quote("*"));
-                trackLyric.setText(lyric[0]);
+            String lyrics;
+            int statusCode;
 
+            try {
+                statusCode = response.getJSONObject("message").getJSONObject("header").getInt("status_code");
+
+                if (statusCode != 200) {
+                    lyricText.setText("No lyric found for this song.");
+                    lyricText.setGravity(Gravity.CENTER);
+                } else {
+                    lyrics = response.getJSONObject("message").getJSONObject("body").getJSONObject("lyrics").getString("lyrics_body");
+                    String[] lyric = lyrics.split(Pattern.quote("*"));
+                    trackLyric = lyric[0];
+                    lyricText.setText(trackLyric);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             TrackDetail.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (pd.isShowing())pd.dismiss();
+                    if (pd.isShowing()) pd.dismiss();
                 }
             });
-
         }
-
     }
 }

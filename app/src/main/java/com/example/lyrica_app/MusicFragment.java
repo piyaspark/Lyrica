@@ -1,12 +1,23 @@
 package com.example.lyrica_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceFragmentCompat;
 
+import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -21,6 +32,8 @@ public class MusicFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+
+    private ListView musicMenu;
 
     public MusicFragment() {
         // Required empty public constructor
@@ -50,12 +63,34 @@ public class MusicFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_music, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_music, container, false);
+        final ListView musicMenu = view.findViewById(R.id.music_list);
+        ArrayList<String> menu = new ArrayList<>();
+        menu.add("Favorites");
+        menu.add("My lyrics");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list_item, R.id.list_content, menu);
+        musicMenu.setAdapter(arrayAdapter);
+        musicMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
+                if (position == 0) {
+                    intent = new Intent(getActivity(), FavoriteList.class);
+                } else {
+                    intent = new Intent(getActivity(), MyLyricList.class);
+                }
+
+                startActivity(intent);
+                Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+        return view;
     }
 }

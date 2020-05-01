@@ -10,14 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -32,9 +30,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -168,7 +166,7 @@ public class SearchFragment extends Fragment {
                         bundle.putString("trackArtist", trackInfoList.get(position).getArtistName());
                         intent.putExtras(bundle);
                         startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     }
                 });
             }

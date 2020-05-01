@@ -17,7 +17,7 @@
         android:fontFamily="@font/roboto_light"
         android:text="Artist"
         android:textColor="#BBB9BD"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
@@ -69,24 +69,10 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="Lyric"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
-
-    <ImageButton
-        android:id="@+id/playlistBtn"
-        android:layout_width="58dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="210dp"
-        android:layout_marginTop="18dp"
-        android:adjustViewBounds="true"
-        android:backgroundTint="#211E1E"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/backBtn2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/playlist" />
 
     <ImageButton
         android:id="@+id/favoriteBtn"
@@ -98,7 +84,6 @@
         android:backgroundTint="#211E1E"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/playlistBtn"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/favorite_icon" />
 

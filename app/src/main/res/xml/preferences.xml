@@ -5,7 +5,7 @@
     <EditTextPreference
         android:dialogTitle=""
         android:key="name_preference"
-        android:summary="Your contricutor name"
+        android:summary="Your contributor name"
         android:title="Name" />
 
     <Preference
