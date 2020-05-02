@@ -14,6 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemLayout"
             android:layout_width="413dp"
             android:layout_height="100dp"
             android:background="#3E3A3A">
@@ -45,7 +46,6 @@
                 android:textColor="#B0AFAF"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleName" />
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,43 +1,59 @@
 package com.example.lyrica_app;
 
-import androidx.annotation.NonNull;
-
 public class TrackInfo {
-    private String titleName, artistName;
-    private int trackId;
+    private String title, artist, lyrics, userId;
+    private int id;
 
-    public TrackInfo(int track_id, String title_name, String artist_name){
-        trackId = track_id;
-        titleName = title_name;
-        artistName = artist_name;
+    public TrackInfo(int id, String title, String artist, String lyrics) {
+        this.userId = "";
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.lyrics = lyrics;
     }
 
-    public TrackInfo(){
+
+    public TrackInfo() {
 
     }
 
-    public int getTrackId() {
-        return trackId;
+    public int getId() {
+        return id;
     }
 
-    public String getTitleName() {
-        return titleName;
+    public String getTitle() {
+        return title;
     }
 
-    public String getArtistName() {
-        return artistName;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setTrackId(int trackId) {
-        this.trackId = trackId;
+    public String getLyrics() {
+        return lyrics;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setTitleName(String titleName) {
-        this.titleName = titleName;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

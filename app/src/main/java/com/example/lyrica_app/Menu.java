@@ -1,16 +1,17 @@
 package com.example.lyrica_app;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
+import com.example.lyrica_app.fragment.AccountFragment;
+import com.example.lyrica_app.fragment.ContributeFragment;
+import com.example.lyrica_app.fragment.MusicFragment;
+import com.example.lyrica_app.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Menu extends AppCompatActivity {

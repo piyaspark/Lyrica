@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="56dp"
-    tools:context=".SearchFragment">
+    tools:context=".fragment.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -35,7 +35,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/searchbox"
             android:ems="10"
-            android:hint="Type title, artist or album"
+            android:hint="Type title or artist"
             android:inputType="textPersonName"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -29,8 +31,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -84,17 +84,14 @@ public class TrackDetail extends AppCompatActivity {
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Object> track = new HashMap<>();
-                track.put("id", trackId);
-                track.put("title", trackTitle);
-                track.put("artist", trackArtist);
-                track.put("lyrics", trackLyric);
+                TrackInfo track = new TrackInfo(trackId, trackTitle, trackArtist, trackLyric);
+                track.setUserId(mAuth.getUid());
 
-                db.collection("tracks").document(Objects.requireNonNull(mAuth.getUid()))
-                        .set(track)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("tracks")
+                        .add(track)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
+                            public void onSuccess(DocumentReference documentReference) {
                                 Log.d("Favorite track", "DocumentSnapshot successfully written!");
                                 Toast.makeText(TrackDetail.this, "Song has been added to favorite list.",
                                         Toast.LENGTH_SHORT).show();
@@ -188,7 +185,7 @@ public class TrackDetail extends AppCompatActivity {
                 statusCode = response.getJSONObject("message").getJSONObject("header").getInt("status_code");
 
                 if (statusCode != 200) {
-                    lyricText.setText("No lyric found for this song.");
+                    lyricText.setText("\n\n\n\n\nNo lyric found for this song.");
                     lyricText.setGravity(Gravity.CENTER);
                 } else {
                     lyrics = response.getJSONObject("message").getJSONObject("body").getJSONObject("lyrics").getString("lyrics_body");
