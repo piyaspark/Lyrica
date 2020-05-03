@@ -1,15 +1,15 @@
 package com.example.lyrica_app;
 
 public class TrackInfo {
-    private String title, artist, lyrics, userId;
+    private String title, artist, lyrics, userId, coverImg;
     private int id;
 
-    public TrackInfo(int id, String title, String artist, String lyrics) {
+    public TrackInfo(String title, String artist, String lyrics) {
         this.userId = "";
-        this.id = id;
         this.title = title;
         this.artist = artist;
         this.lyrics = lyrics;
+        this.coverImg = "";
     }
 
 
@@ -37,6 +37,10 @@ public class TrackInfo {
         return userId;
     }
 
+    public String getCoverImg() {
+        return coverImg;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -55,5 +59,9 @@ public class TrackInfo {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
     }
 }

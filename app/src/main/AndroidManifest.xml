@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyLyricList"></activity>
+        <activity android:name=".WriteMyLyric"></activity>
+        <activity android:name=".AddLyric" />
+        <activity android:name=".MyLyricList" />
         <activity android:name=".FavoriteList" />
         <activity android:name=".TrackDetail" />
         <activity android:name=".Menu" />

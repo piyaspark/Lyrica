@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,8 +45,8 @@ public class TrackDetail extends AppCompatActivity {
     private final String API_KEY = "apikey=b259ba906c6a3d625a51558589a92cc4";
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference favRef = db.collection("favorites");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +85,11 @@ public class TrackDetail extends AppCompatActivity {
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TrackInfo track = new TrackInfo(trackId, trackTitle, trackArtist, trackLyric);
+                TrackInfo track = new TrackInfo(trackTitle, trackArtist, trackLyric);
                 track.setUserId(mAuth.getUid());
+                track.setId(trackId);
 
-                db.collection("tracks")
-                        .add(track)
+                favRef.add(track)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
