@@ -41,12 +41,12 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class TrackDetail extends AppCompatActivity {
-    private ImageButton backBtn, favoriteBtn;
-    private TextView titleText, artistText, lyricText;
+    ImageButton backBtn, favoriteBtn;
+    TextView titleText, artistText, lyricText;
+    
     private ProgressDialog pd;
     private int trackId;
     private String trackTitle, trackArtist, trackLyric;
-    private String url;
     private final String API_KEY = "apikey=b259ba906c6a3d625a51558589a92cc4";
     private boolean isFavorite;
 
@@ -157,7 +157,7 @@ public class TrackDetail extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     private void fetch() {
-        url = String.format("https://api.musixmatch.com/ws/1.1/track.lyrics.get?format=jsonp&callback=callback&track_id=%d&%s", trackId, API_KEY);
+        String url = String.format("https://api.musixmatch.com/ws/1.1/track.lyrics.get?format=jsonp&callback=callback&track_id=%d&%s", trackId, API_KEY);
         new FetchData().execute(url);
     }
 
