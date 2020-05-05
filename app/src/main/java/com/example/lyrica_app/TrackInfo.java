@@ -3,6 +3,7 @@ package com.example.lyrica_app;
 public class TrackInfo {
     private String title, artist, lyrics, userId, coverImg;
     private int id;
+    private boolean isFavorite;
 
     public TrackInfo(String title, String artist, String lyrics) {
         this.userId = "";
@@ -10,6 +11,7 @@ public class TrackInfo {
         this.artist = artist;
         this.lyrics = lyrics;
         this.coverImg = "";
+        this.isFavorite = false;
     }
 
 
@@ -41,6 +43,10 @@ public class TrackInfo {
         return coverImg;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -63,5 +69,9 @@ public class TrackInfo {
 
     public void setCoverImg(String coverImg) {
         this.coverImg = coverImg;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

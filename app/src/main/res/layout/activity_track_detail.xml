@@ -85,6 +85,6 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/favorite_icon" />
+        app:srcCompat="@drawable/ic_favorite_border" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

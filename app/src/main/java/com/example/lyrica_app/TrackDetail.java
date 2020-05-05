@@ -14,13 +14,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +48,7 @@ public class TrackDetail extends AppCompatActivity {
     private String trackTitle, trackArtist, trackLyric;
     private String url;
     private final String API_KEY = "apikey=b259ba906c6a3d625a51558589a92cc4";
+    private boolean isFavorite;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -66,6 +72,13 @@ public class TrackDetail extends AppCompatActivity {
             trackId = bundle.getInt("trackId");
             trackTitle = bundle.getString("trackTitle");
             trackArtist = bundle.getString("trackArtist");
+            isFavorite = bundle.getBoolean("isFavorite");
+        }
+
+        if (isFavorite) {
+            favoriteBtn.setImageResource(R.drawable.ic_favorite_full);
+        } else {
+            favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
         }
 
         Log.d("Track ID: ", String.format("%d", trackId));
@@ -85,27 +98,60 @@ public class TrackDetail extends AppCompatActivity {
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TrackInfo track = new TrackInfo(trackTitle, trackArtist, trackLyric);
-                track.setUserId(mAuth.getUid());
-                track.setId(trackId);
-
-                favRef.add(track)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d("Favorite track", "DocumentSnapshot successfully written!");
-                                Toast.makeText(TrackDetail.this, "Song has been added to favorite list.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("Favorite track", "Error writing document", e);
-                            }
-                        });
+                if (isFavorite) {
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite_border);
+                    deleteFromFavorite();
+                } else {
+                    favoriteBtn.setImageResource(R.drawable.ic_favorite_full);
+                    addToFavorite();
+                }
             }
         });
+    }
+
+    public void addToFavorite(){
+        isFavorite = true;
+        TrackInfo track = new TrackInfo(trackTitle, trackArtist, trackLyric);
+        track.setUserId(mAuth.getUid());
+        track.setId(trackId);
+        track.setFavorite(isFavorite);
+
+        favRef.add(track)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Favorite track", "DocumentSnapshot successfully written!");
+                        Toast.makeText(TrackDetail.this, "Song has been added to favorite list.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Favorite track", "Error writing document", e);
+                    }
+                });
+    }
+
+    public void deleteFromFavorite(){
+        isFavorite = false;
+        favRef.whereEqualTo("userId", mAuth.getUid())
+                .whereEqualTo("id", trackId).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
+                                favRef.document(doc.getId()).delete();
+                            }
+                            Log.d("Delete favorite track", "Success deleting track");
+                            Toast.makeText(TrackDetail.this, "Song has been deleted from favorite list.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.d("Delete favorite track", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 
