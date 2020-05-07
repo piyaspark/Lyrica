@@ -36,7 +36,7 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up2);
         mAuth = FirebaseAuth.getInstance();
-        email = (EditText) findViewById(R.id.emailText);
+        email = (EditText) findViewById(R.id.emailText_signup);
         password = (EditText) findViewById(R.id.passwordText);
         backBtn = (ImageButton) findViewById(R.id.backBtn);
         signup = (Button) findViewById(R.id.signup);
@@ -88,7 +88,7 @@ public class SignUp extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("Test", "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(SignUp.this, "Register failed.",
+                                Toast.makeText(SignUp.this, "Register failed. This email is already existed",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

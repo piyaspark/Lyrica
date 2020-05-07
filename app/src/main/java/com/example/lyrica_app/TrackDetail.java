@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 public class TrackDetail extends AppCompatActivity {
     ImageButton backBtn, favoriteBtn;
     TextView titleText, artistText, lyricText;
-    
+
     private ProgressDialog pd;
     private int trackId;
     private String trackTitle, trackArtist, trackLyric;
@@ -72,6 +72,7 @@ public class TrackDetail extends AppCompatActivity {
             trackId = bundle.getInt("trackId");
             trackTitle = bundle.getString("trackTitle");
             trackArtist = bundle.getString("trackArtist");
+            trackLyric = bundle.getString("trackLyric");
             isFavorite = bundle.getBoolean("isFavorite");
         }
 
@@ -85,7 +86,11 @@ public class TrackDetail extends AppCompatActivity {
         titleText.setText(trackTitle);
         artistText.setText(trackArtist);
 
-        fetch();
+        if (trackLyric.equals("")){
+            fetch();
+        }else{
+            lyricText.setText(trackLyric);
+        }
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +114,7 @@ public class TrackDetail extends AppCompatActivity {
         });
     }
 
-    public void addToFavorite(){
+    public void addToFavorite() {
         isFavorite = true;
         TrackInfo track = new TrackInfo(trackTitle, trackArtist, trackLyric);
         track.setUserId(mAuth.getUid());
@@ -133,14 +138,14 @@ public class TrackDetail extends AppCompatActivity {
                 });
     }
 
-    public void deleteFromFavorite(){
+    public void deleteFromFavorite() {
         isFavorite = false;
         favRef.whereEqualTo("userId", mAuth.getUid())
                 .whereEqualTo("id", trackId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())) {
                                 favRef.document(doc.getId()).delete();
                             }

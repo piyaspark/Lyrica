@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#FAF7F7"
         android:ems="10"
         android:fontFamily="@font/roboto_thin"
@@ -21,10 +21,10 @@
         android:textColor="#FAF8F8"
         android:textColorHint="#FAF9F9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailText_signup" />
 
     <EditText
-        android:id="@+id/emailText"
+        android:id="@+id/emailText_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
